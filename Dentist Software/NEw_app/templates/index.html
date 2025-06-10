@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-roboto bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div class="bg-blue-600 text-white w-64 p-4">
+        <div class="flex items-center mb-8">
+          <img
+            alt="Dental Clinic Logo"
+            class="mr-2"
+            height="50"
+            src="https://storage.googleapis.com/a1aa/image/3Jjq46TRPR5IE90JrOYpB7rAotEm6s6iRJDbGlXgd9khSX5E.jpg"
+            width="50"
+          />
+          <span class="text-xl font-bold">Dental Clinic</span>
+        </div>
+        <nav>
+          <ul>
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('patients') }}"
+                ><i class="fas fa-users mr-2"></i>Patients</a
+              >
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center text-blue-300"
+                href="{{ url_for('appointments') }}"
+                ><i class="fas fa-calendar-alt mr-2"></i>Appointments</a
+              >
+            </li>
+            {{ edit_1 }}
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('materials_used') }}"
+                ><i class="fas fa-box-open mr-2"></i>Materials Used</a
+              >
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('medical_history') }}"
+                ><i class="fas fa-file-medical mr-2"></i>Medical History</a
+              >
+            </li>
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('prescriptions') }}"
+                ><i class="fas fa-prescription mr-2"></i>Prescriptions</a
+              >
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('treatment_plans') }}"
+                ><i class="fas fa-stethoscope mr-2"></i>Treatment Plans</a
+              >
+            </li>
+            <!-- ... existing sidebar items ... -->
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+            {{ edit_2 }}
+          </ul>
+        </nav>
+        <div class="absolute bottom-4 left-4">
+          <a class="flex items-center" href="#"
+            ><i class="fas fa-user-circle mr-2"></i>Admin</a
+          >
+        </div>
+      </div>
+      <!-- Main Content -->
+      <div class="flex-1 p-4">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-2xl font-bold">Appointments</h1>
+          <div class="flex items-center space-x-4">
+            <button class="bg-gray-200 p-2 rounded">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="bg-gray-200 p-2 rounded">
+              <i class="fas fa-print"></i>
+            </button>
+            <button class="bg-gray-200 p-2 rounded">
+              <i class="fas fa-cog"></i>
+            </button>
+          </div>
+        </div>
+        <!-- ... existing content ... -->
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-roboto bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div class="bg-blue-600 text-white w-64 p-4 flex flex-col">
+        <div class="flex items-center mb-8">
+          <img
+            alt="Logo da Clínica Dental"
+            class="mr-2"
+            height="50"
+            src="https://storage.googleapis.com/a1aa/image/3Jjq46TRPR5IE90JrOYpB7rAotEm6s6iRJDbGlXgd9khSX5E.jpg"
+            width="50"
+          />
+          <span class="text-xl font-bold">Clínica Dental</span>
+        </div>
+        <nav>
+          <ul>
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('patients') }}">
+                <i class="fas fa-users mr-2"></i>Pacientes
+              </a>
+            </li>
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('appointments') }}">
+                <i class="fas fa-calendar-alt mr-2"></i>Consultas
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('purchase_requests') }}"
+              >
+                <i class="fas fa-shopping-cart mr-2"></i>Solicitações de Compra
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('materials_used') }}"
+              >
+                <i class="fas fa-box-open mr-2"></i>Materiais Usados
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center text-blue-300"
+                href="{{ url_for('medical_history') }}"
+              >
+                <i class="fas fa-file-medical mr-2"></i>Histórico Médico
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('prescriptions') }}"
+              >
+                <i class="fas fa-prescription mr-2"></i>Prescrições
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('treatment_plans') }}"
+              >
+                <i class="fas fa-stethoscope mr-2"></i>Planos de Tratamento
+              </a>
+            </li>
+            <!-- ... existing sidebar items ... -->
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+          </ul>
+        </nav>
+        <div class="absolute bottom-4 left-4">
+          <a class="flex items-center" href="#">
+            <i class="fas fa-user-circle mr-2"></i>Admin
+          </a>
+        </div>
+      </div>
+      <!-- Main Content -->
+      <div class="flex-1 p-4">
+        <h1 class="text-2xl font-bold mb-4">Histórico Médico</h1>
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
+          <label
+            for="patient_id"
+            class="block text-sm font-medium text-gray-700"
+            >Patient ID:</label
+          >
+          <input
+            type="number"
+            id="patient_id"
+            name="patient_id"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            required
+          /><br /><br />
+
+          <label for="date" class="block text-sm font-medium text-gray-700"
+            >Data:</label
+          >
+          <input
+            type="date"
+            id="date"
+            name="date"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            required
+          /><br /><br />
+
+          <label for="type" class="block text-sm font-medium text-gray-700"
+            >Tipo:</label
+          >
+          <input
+            type="text"
+            id="type"
+            name="type"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            required
+          /><br /><br />
+
+          <label
+            for="description"
+            class="block text-sm font-medium text-gray-700"
+            >Descrição:</label
+          >
+          <textarea
+            id="description"
+            name="description"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          ></textarea
+          ><br /><br />
+
+          <label
+            for="observations"
+            class="block text-sm font-medium text-gray-700"
+            >Observações:</label
+          >
+          <textarea
+            id="observations"
+            name="observations"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          ></textarea
+          ><br /><br />
+
+          <label for="file_upload" class="block text-sm font-medium text-gray-700">Upload de Arquivo:</label>
+          <input
+            type="file"
+            id="file_upload"
+            name="file_upload"
+            accept=".png, .jpeg, .jpg, .pdf"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            required
+          /><br /><br />
+
+          <input
+            type="submit"
+            value="Adicionar Histórico Médico"
+            class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 cursor-pointer"
+          />
+        </form>
+        
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

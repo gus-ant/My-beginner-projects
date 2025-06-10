@@ -1,0 +1,518 @@
+<html>
+  <head>
+    <base href="/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GustAI Magic - Flashcards Inteligentes</title>
+
+    <style>
+      :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --secondary: #f8fafc;
+        --text: #334155;
+        --background: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background: var(--background);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .input-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .input-field {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+
+      .btn {
+        background: var(--primary);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+
+      .flashcards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .flashcard {
+        perspective: 1000px;
+        height: 400px;
+        width: 300px;
+      }
+
+      .flashcard-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        cursor: pointer;
+      }
+
+      .flashcard.flipped .flashcard-inner {
+        transform: rotateY(180deg);
+      }
+
+      .flashcard-front,
+      .flashcard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background: var(--secondary);
+        font-size: 0.95rem;
+      }
+
+      .flashcard-back {
+        transform: rotateY(180deg);
+        background: var(--primary);
+        color: white;
+      }
+
+      .controls {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 2rem;
+        font-size: 1.2rem;
+        color: var(--primary);
+      }
+
+      .error {
+        text-align: center;
+        padding: 2rem;
+        font-size: 1.2rem;
+        color: #dc2626;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>GustAI Magic 🤖</h1>
+        <p>Flashcards inteligentes para potencializar seus estudos</p>
+      </header>
+
+      <main>
+        <div class="input-section">
+          <div class="input-field">
+            <input
+              type="text"
+              id="topic"
+              placeholder="Digite um assunto (ex: História da Roma Antiga)"
+            />
+          </div>
+          <div class="input-field">
+            <input
+              type="number"
+              id="cardCount"
+              min="1"
+              max="20"
+              value="5"
+              placeholder="Quantidade de flashcards"
+            />
+          </div>
+          <select id="difficulty">
+            <option value="basic">Básico</option>
+            <option value="intermediate">Intermediário</option>
+            <option value="advanced">Avançado</option>
+          </select>
+          <button class="btn" onclick="generateFlashcards()">
+            Gerar Flashcards
+          </button>
+        </div>
+
+        <div class="controls">
+          <button class="btn" onclick="saveFlashcards()">Salvar</button>
+          <button class="btn" onclick="exportPDF()">Exportar PDF</button>
+          <input
+            type="file"
+            id="fileInput"
+            accept=".txt"
+            onchange="loadFlashcards(event)"
+            style="display: none"
+          />
+          <button
+            class="btn"
+            onclick="document.getElementById('fileInput').click()"
+          >
+            Carregar Flashcards
+          </button>
+        </div>
+
+        <div class="flashcards-container" id="flashcardsContainer"></div>
+      </main>
+    </div>
+
+    <script>
+      async function generateAIFlashcards(topic, count, difficulty) {
+        const API_URL =
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
+        const API_KEY = "{{ api_key }}";
+
+        const prompt = `Gere ${count} flashcards (em português), sobre ${topic}, nivel ${difficulty}. Cada flashcard tem que ter uma questão e uma resposta, com até 100 palavras. Retorne a resposta APENAS em JSON com as informaçoes dentro de chaves {} e objetos contendo propriedades 'question' e 'answer', SEM TEXTOS ADICIONAIS.`;
+
+        try {
+          const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: prompt,
+                    },
+                  ],
+                },
+              ],
+            }),
+          });
+
+          const responseText = await response.text();
+          console.log("Response from API:", responseText); // Log da resposta
+
+          if (!response.ok) {
+            throw new Error("API request failed");
+          }
+
+          const data = JSON.parse(responseText);
+          const textContent = data.candidates[0]?.content?.parts[0]?.text;
+
+          // Desescapar o texto JSON
+          const jsonString = textContent
+            .replace(/\\\"/g, '"') // Remove as barras invertidas
+            .replace(/```json\n|\n```/g, ""); // Remove as marcações de código
+
+          const flashcardsContent = JSON.parse(jsonString); // Analisa o JSON
+
+          return flashcardsContent;
+        } catch (error) {
+          console.error("Error generating flashcards:", error);
+          throw error;
+        }
+      }
+
+      async function generateFlashcards() {
+        const topic = document.getElementById("topic").value;
+        const difficulty = document.getElementById("difficulty").value;
+        const cardCount =
+          parseInt(document.getElementById("cardCount").value) || 3;
+
+        if (!topic) {
+          alert("Por favor, insira um assunto!");
+          return;
+        }
+
+        if (cardCount < 1 || cardCount > 20) {
+          alert("Por favor, escolha entre 1 e 20 flashcards!");
+          return;
+        }
+
+        const container = document.getElementById("flashcardsContainer");
+        container.innerHTML =
+          '<div class="loading">Gerando flashcards...</div>';
+
+        try {
+          const flashcards = await generateAIFlashcards(
+            topic,
+            cardCount,
+            difficulty
+          );
+          container.innerHTML = "";
+
+          flashcards.forEach((card, index) => {
+            const flashcard = document.createElement("div");
+            flashcard.className = "flashcard";
+            flashcard.innerHTML = `
+              <div class="flashcard-inner">
+                <div class="flashcard-front">
+                  <p>${card.question}</p>
+                </div>
+                <div class="flashcard-back">
+                  <p>${card.answer}</p>
+                </div>
+              </div>
+            `;
+
+            flashcard.addEventListener("click", () => {
+              flashcard.classList.toggle("flipped");
+            });
+
+            container.appendChild(flashcard);
+          });
+        } catch (error) {
+          console.error("Erro ao gerar flashcards:", error);
+          container.innerHTML =
+            '<div class="error">Erro ao gerar flashcards. Tente novamente.</div>';
+        }
+      }
+      function saveFlashcards() {
+        const container = document.getElementById("flashcardsContainer");
+        const flashcards = container.querySelectorAll(".flashcard-inner");
+        let content = "";
+        const topic = document.getElementById("topic").value;
+
+        flashcards.forEach((flashcard, index) => {
+          const question =
+            flashcard.querySelector(".flashcard-front p").innerText;
+          const answer = flashcard.querySelector(".flashcard-back p").innerText;
+          content += `Flashcard ${
+            index + 1
+          }:\nPergunta: ${question}\nResposta: ${answer}\n\n`;
+        });
+
+        const blob = new Blob([content], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+
+        // Perguntar ao usuário qual o nome do arquivo
+        const fileName = prompt("Insira o nome do arquivo:");
+        a.download = `${fileName || "flashcards"}.txt`;
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert("Flashcards salvos com sucesso!");
+      }
+
+      function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const container = document.getElementById("flashcardsContainer");
+        const flashcards = container.querySelectorAll(".flashcard-inner");
+        const doc = new jsPDF();
+
+        let currentY = 10; // Posição inicial na página
+        let cardsPerPage = 0; // Contador de flashcards por página
+        const topic = document.getElementById("topic").value;
+        flashcards.forEach((flashcard, index) => {
+          if (cardsPerPage >= 2) {
+            // Nova página quando mais de 2 flashcards forem adicionados
+            doc.addPage();
+            currentY = 10;
+            cardsPerPage = 0;
+          }
+
+          const question =
+            flashcard.querySelector(".flashcard-front p").innerText;
+          const answer = flashcard.querySelector(".flashcard-back p").innerText;
+
+          // Dividir texto em linhas
+          const questionLines = doc.splitTextToSize(question, 170); // Ajuste conforme necessário
+          const answerLines = doc.splitTextToSize(answer, 170);
+
+          // Alturas para balões calculadas com base no número de linhas
+          const questionHeight = 10 + questionLines.length * 7;
+          const answerHeight = 10 + answerLines.length * 7;
+
+          // Desenhar balão da pergunta (branco com texto preto)
+          doc.setFillColor(255, 255, 255); // Branco
+          doc.roundedRect(10, currentY, 190, questionHeight, 5, 5, "F");
+          doc.setTextColor(51, 65, 85); // Preto
+          doc.text("Pergunta:", 15, currentY + 7);
+          doc.text(questionLines, 15, currentY + 15);
+
+          // Atualizar a posição para o balão da resposta
+          currentY += questionHeight + 10;
+
+          // Desenhar balão da resposta (roxo claro com texto branco)
+          doc.setFillColor(99, 102, 241); // Roxo claro
+          doc.roundedRect(10, currentY, 190, answerHeight, 5, 5, "F");
+          doc.setTextColor(255, 255, 255); // Branco
+          doc.text("Resposta:", 15, currentY + 7);
+          doc.text(answerLines, 15, currentY + 15);
+
+          // Atualizar posição atual para o próximo flashcard
+          currentY += answerHeight + 15;
+          cardsPerPage++; // Incrementar contador de flashcards por página
+        });
+        const pdfName = prompt("Insira o nome do arquivo:");
+        doc.save(`${pdfName || "flashcards"}.pdf`);
+      }
+
+      function shareFlashcards() {
+        const link = window.location.href;
+        if (navigator.clipboard) {
+          navigator.clipboard
+            .writeText(link)
+            .then(() => {
+              alert(
+                "Link de compartilhamento copiado para a área de transferência!"
+              );
+            })
+            .catch((error) => {
+              console.error("Erro ao copiar o link: ", error);
+            });
+        } else {
+          // Fallback para navegadores que não suportam a API Clipboard
+          alert(
+            "A API Clipboard não está disponível neste navegador. Copie o link manualmente: " +
+              link
+          );
+        }
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      function loadFlashcards(event) {
+        const file = event.target.files[0];
+        if (!file) {
+          alert("Nenhum arquivo selecionado!");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const content = e.target.result;
+
+          // Dividir o conteúdo do arquivo em blocos de flashcards
+          const flashcards = content
+            .split("\n\n") // Separa cada flashcard com base em blocos de linhas
+            .map((block) => {
+              const lines = block.split("\n"); // Divide as linhas dentro de cada flashcard
+              if (lines.length >= 3) {
+                const question = lines[1]?.replace("Pergunta: ", "").trim(); // Remove o prefixo "Pergunta:"
+                const answer = lines[2]?.replace("Resposta: ", "").trim(); // Remove o prefixo "Resposta:"
+                return { question, answer };
+              }
+              return null; // Ignorar blocos inválidos
+            })
+            .filter((card) => card); // Remove flashcards nulos (inválidos)
+
+          // Obter o container onde os flashcards serão exibidos
+          const container = document.getElementById("flashcardsContainer");
+          container.innerHTML = ""; // Limpa qualquer flashcard existente
+
+          // Gerar os flashcards e adicionar ao DOM
+          flashcards.forEach((card, index) => {
+            const flashcard = document.createElement("div");
+            flashcard.className = "flashcard";
+            flashcard.innerHTML = `
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <p>${card.question}</p>
+          </div>
+          <div class="flashcard-back">
+            <p>${card.answer}</p>
+          </div>
+        </div>
+      `;
+
+            // Adicionar funcionalidade de flip ao clicar no flashcard
+            flashcard.addEventListener("click", () => {
+              flashcard.classList.toggle("flipped");
+            });
+
+            container.appendChild(flashcard); // Adicionar o flashcard ao container
+          });
+
+          if (flashcards.length === 0) {
+            alert("Nenhum flashcard válido encontrado no arquivo!");
+          }
+        };
+
+        reader.readAsText(file); // Ler o arquivo como texto
+      }
+    </script>
+  </body>
+</html>

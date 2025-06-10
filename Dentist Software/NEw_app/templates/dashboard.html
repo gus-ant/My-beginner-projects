@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body,
+      head {
+        height: 100%; /* Adicionando altura total ao html e body */
+      }
+      .table-title {
+        background-color: #f3f4f6;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .table {
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+      }
+    </style>
+  </head>
+  <body class="font-roboto bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div class="bg-blue-600 text-white w-64 p-4 flex flex-col h-full">
+        <div class="flex items-center mb-8">
+          <img
+            alt="Logo da Clínica Dental"
+            class="mr-2"
+            height="50"
+            src="https://storage.googleapis.com/a1aa/image/3Jjq46TRPR5IE90JrOYpB7rAotEm6s6iRJDbGlXgd9khSX5E.jpg"
+            width="50"
+          />
+          <span class="text-xl font-bold">Clínica Dental</span>
+        </div>
+        <nav>
+          <ul>
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('patients') }}">
+                <i class="fas fa-users mr-2"></i>Pacientes
+              </a>
+            </li>
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('appointments') }}">
+                <i class="fas fa-calendar-alt mr-2"></i>Consultas
+              </a>
+            </li>
+            <!-- ... existing sidebar items ... -->
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('purchase_requests') }}"
+              >
+                <i class="fas fa-shopping-cart mr-2"></i>Solicitações de Compra
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('materials_used') }}"
+              >
+                <i class="fas fa-box-open mr-2"></i>Materiais Usados
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('medical_history') }}"
+              >
+                <i class="fas fa-file-medical mr-2"></i>Histórico Médico
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('prescriptions') }}"
+              >
+                <i class="fas fa-prescription mr-2"></i>Prescrições
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('treatment_plans') }}"
+              >
+                <i class="fas fa-stethoscope mr-2"></i>Planos de Tratamento
+              </a>
+            </li>
+            <!-- ... existing sidebar items ... -->
+            <li class="mb-4">
+              <a
+                class="flex items-center text-blue-300"
+                href="{{ url_for('dashboard') }}"
+              >
+                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="absolute bottom-4 left-4">
+          <a class="flex items-center" href="#">
+            <i class="fas fa-user-circle mr-2"></i>Admin
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1 p-4">
+        <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+
+        <!-- Botão para modificar informações -->
+        <div class="mb-4">
+          <a
+            href="{{ url_for('edit_dashboard') }}"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Modificar Informações
+          </a>
+        </div>
+
+        <!-- Tabela de Pacientes -->
+        <h2 class="table-title text-xl font-semibold mb-2">Pacientes</h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">ID do Paciente</th>
+              <th class="px-4 py-2">Nome</th>
+              <th class="px-4 py-2">Sobrenome</th>
+              <th class="px-4 py-2">Data de Nascimento</th>
+              <th class="px-4 py-2">Sexo</th>
+              <th class="px-4 py-2">Endereço</th>
+              <th class="px-4 py-2">Telefone</th>
+              <th class="px-4 py-2">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for patient in patients %}
+            <tr>
+              <td class="px-4 py-2">{{ patient[0] }}</td>
+              <td class="px-4 py-2">{{ patient[1] }}</td>
+              <td class="px-4 py-2">{{ patient[2] }}</td>
+              <td class="px-4 py-2">{{ patient[3] }}</td>
+              <td class="px-4 py-2">{{ patient[4] }}</td>
+              <td class="px-4 py-2">{{ patient[5] }}</td>
+              <td class="px-4 py-2">{{ patient[6] }}</td>
+              <td class="px-4 py-2">{{ patient[7] }}</td>
+              <td class="px-4 py-2">
+                <button
+                  onclick="window.location.href='{{ url_for(edit_patient; patient_id=patient[0]) }}'"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                >
+                  <i class="fas fa-edit"></i> Editar
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Tabela de Consultas -->
+        <h2 class="table-title text-xl font-semibold mb-2">Consultas</h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">ID do Paciente</th>
+              <th class="px-4 py-2">Data e Hora</th>
+              <th class="px-4 py-2">Tipo</th>
+              <th class="px-4 py-2">Status</th>
+              <th class="px-4 py-2">Observações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for appointment in appointments %}
+            <tr>
+              <td class="px-4 py-2">{{ appointment[1] }}</td>
+              <td class="px-4 py-2">{{ appointment[2] }}</td>
+              <td class="px-4 py-2">{{ appointment[3] }}</td>
+              <td class="px-4 py-2">{{ appointment[4] }}</td>
+              <td class="px-4 py-2">{{ appointment[5] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Tabela de Histórico Médico -->
+        <h2 class="table-title text-xl font-semibold mb-2">Histórico Médico</h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Paciente</th>
+              <th class="px-4 py-2">Data</th>
+              <th class="px-4 py-2">Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for history in medical_histories %}
+            <tr>
+              <td class="px-4 py-2">{{ history[0] }}</td>
+              <td class="px-4 py-2">{{ history[1] }}</td>
+              <td class="px-4 py-2">{{ history[2] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Tabela de Planos de Tratamento -->
+        <h2 class="table-title text-xl font-semibold mb-2">
+          Planos de Tratamento
+        </h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">ID do Paciente:</th>
+              <th class="px-4 py-2">Data de Início:</th>
+              <th class="px-4 py-2">Data de Fim:</th>
+              <th class="px-4 py-2">Descrição:</th>
+              <th class="px-4 py-2">Observações:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for plan in treatment_plans %}
+            <tr>
+              <td class="px-4 py-2">{{ plan[1] }}</td>
+              <td class="px-4 py-2">{{ plan[2] }}</td>
+              <td class="px-4 py-2">{{ plan[3] }}</td>
+              <td class="px-4 py-2">{{ plan[4] }}</td>
+              <td class="px-4 py-2">{{ plan[5] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Tabela de Prescrições -->
+        <h2 class="table-title text-xl font-semibold mb-2">Prescrições</h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">ID do Paciente:</th>
+              <th class="px-4 py-2">Data:</th>
+              <th class="px-4 py-2">Medicação:</th>
+              <th class="px-4 py-2">Dosagem:</th>
+              <th class="px-4 py-2">Observações:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prescription in prescriptions %}
+            <tr>
+              <td class="px-4 py-2">{{ prescription[1] }}</td>
+              <td class="px-4 py-2">{{ prescription[2] }}</td>
+              <td class="px-4 py-2">{{ prescription[3] }}</td>
+              <td class="px-4 py-2">{{ prescription[4] }}</td>
+              <td class="px-4 py-2">{{ prescription[5] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Tabela de Materiais Usados -->
+        <h2 class="table-title text-xl font-semibold mb-2">Materiais Usados</h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Nome</th>
+              <th class="px-4 py-2">Quantidade Usada</th>
+              <!-- Updated header -->
+              <th class="px-4 py-2">Data Usada (mm/dd/yyyy)</th>
+              <!-- Updated header -->
+              <th class="px-4 py-2">Observações</th>
+              <!-- New header -->
+            </tr>
+          </thead>
+          <tbody>
+            {% for material in materials_used %}
+            <tr>
+              <td class="px-4 py-2">{{ material[1] }}</td>
+              <!-- Adjusted index -->
+              <td class="px-4 py-2">{{ material[2] }}</td>
+              <!-- Adjusted index -->
+              <td class="px-4 py-2">{{ material[3] }}</td>
+              <!-- Adjusted index -->
+              <td class="px-4 py-2">{{ material[4] }}</td>
+              <!-- New data field -->
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Tabela de Solicitações de Compra -->
+        <h2 class="table-title text-xl font-semibold mb-2">
+          Solicitações de Compra
+        </h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Material ID</th>
+              <th class="px-4 py-2">Quantidade Solicitada</th>
+              <th class="px-4 py-2">Data da Solicitação (mm/dd/yyyy)</th>
+              <th class="px-4 py-2">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for request in purchase_requests %}
+            <tr>
+              <td class="px-4 py-2">{{ request[1] }}</td>
+              <td class="px-4 py-2">{{ request[2] }}</td>
+              <td class="px-4 py-2">{{ request[3] }}</td>
+              <td class="px-4 py-2">{{ request[4] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="mb-8"></div>
+        <!-- Mais margem inferior -->
+
+        <!-- Tabela de Gastos Semanais com Medicamentos -->
+        <h2 class="table-title text-xl font-semibold mb-2">
+          Gastos Semanais com Medicamentos
+        </h2>
+        <table class="table min-w-full bg-white mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Semana</th>
+              <th class="px-4 py-2">Total Gasto (R$)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for expense in weekly_expenses %}
+            <!-- Alterado de monthly_expenses para weekly_expenses -->
+            <tr>
+              <td class="px-4 py-2">{{ expense[0] }}</td>
+              <td class="px-4 py-2">{{ expense[1] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

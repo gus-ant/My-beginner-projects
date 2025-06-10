@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-roboto bg-gray-100">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div class="bg-blue-600 text-white w-64 p-4">
+        <div class="flex items-center mb-8">
+          <img
+            alt="Logo da Clínica Dental"
+            class="mr-2"
+            height="50"
+            src="https://storage.googleapis.com/a1aa/image/3Jjq46TRPR5IE90JrOYpB7rAotEm6s6iRJDbGlXgd9khSX5E.jpg"
+            width="50"
+          />
+          <span class="text-xl font-bold">Clínica do Gabriel</span>
+        </div>
+        <nav>
+          <ul>
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('patients') }}">
+                <i class="fas fa-users mr-2"></i>Pacientes
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center text-blue-300"
+                href="{{ url_for('appointments') }}"
+              >
+                <i class="fas fa-calendar-alt mr-2"></i>Consultas
+              </a>
+            </li>
+            <!-- ... existing sidebar items ... -->
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('purchase_requests') }}"
+              >
+                <i class="fas fa-shopping-cart mr-2"></i>Solicitações de Compra
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('materials_used') }}"
+              >
+                <i class="fas fa-box-open mr-2"></i>Materiais Usados
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('medical_history') }}"
+              >
+                <i class="fas fa-file-medical mr-2"></i>Histórico Médico
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('prescriptions') }}"
+              >
+                <i class="fas fa-prescription mr-2"></i>Prescrições
+              </a>
+            </li>
+            <li class="mb-4">
+              <a
+                class="flex items-center"
+                href="{{ url_for('treatment_plans') }}"
+              >
+                <i class="fas fa-stethoscope mr-2"></i>Planos de Tratamento
+              </a>
+            </li>
+            <!-- ... existing sidebar items ... -->
+            <li class="mb-4">
+              <a class="flex items-center" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                <!-- Ícone para o dashboard -->
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="absolute bottom-4 left-4">
+          <a class="flex items-center" href="#">
+            <i class="fas fa-user-circle mr-2"></i>Admin
+          </a>
+        </div>
+      </div>
+      <!-- Main Content -->
+      <div class="flex-1 p-4">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-2xl font-bold">Consultas</h1>
+          <div class="flex items-center space-x-4">
+            <button class="bg-gray-200 p-2 rounded">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="bg-gray-200 p-2 rounded">
+              <i class="fas fa-print"></i>
+            </button>
+            <button class="bg-gray-200 p-2 rounded">
+              <i class="fas fa-cog"></i>
+            </button>
+          </div>
+        </div>
+        <form method="POST" action="{{ url_for('appointments') }}">
+          <div class="form-group mb-4">
+            <label
+              for="patient_id"
+              class="block text-sm font-medium text-gray-700"
+              >ID do Paciente:</label
+            >
+            <input
+              type="number"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              id="patient_id"
+              name="patient_id"
+              required
+            />
+          </div>
+          <div class="form-group mb-4">
+            <label
+              for="date_time"
+              class="block text-sm font-medium text-gray-700"
+              >Data e Hora:</label
+            >
+            <input
+              type="datetime-local"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              id="date_time"
+              name="date_time"
+              required
+            />
+          </div>
+          <div class="form-group mb-4">
+            <label for="type" class="block text-sm font-medium text-gray-700"
+              >Tipo:</label
+            >
+            <input
+              type="text"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              id="type"
+              name="type"
+              required
+            />
+          </div>
+          <div class="form-group mb-4">
+            <label for="status" class="block text-sm font-medium text-gray-700"
+              >Status:</label
+            >
+            <input
+              type="text"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              id="status"
+              name="status"
+              required
+            />
+          </div>
+          <div class="form-group mb-4">
+            <label
+              for="observations"
+              class="block text-sm font-medium text-gray-700"
+              >Observações:</label
+            >
+            <input
+              type="text"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              id="observations"
+              name="observations"
+            />
+          </div>
+          <button type="submit" class="bg-blue-600 text-white p-2 rounded m-4">
+            Adicionar Consulta
+          </button>
+        </form>
+
+       
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
